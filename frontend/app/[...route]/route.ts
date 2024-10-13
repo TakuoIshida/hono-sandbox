@@ -12,8 +12,8 @@ app.get("/hello", async (c) => {
   try {
     const client = hc<AppType>("http://localhost:4000/");
     const res = await client.api.v1.hello.$get();
-    console.log(res);
-    message = await res.text();
+    const { message: resData } = await res.json();
+    message = resData;
   } catch (e) {
     console.error(e);
     return c.text("Error fetching data");
