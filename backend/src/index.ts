@@ -1,16 +1,20 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
 
-const app = new Hono()
+const app = new Hono();
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+const route = app.get("/api/v1/hello", (c) => {
+  return c.json({
+    message: "Hello Hono! from backend",
+  });
+});
 
-const port = 3000
-console.log(`Server is running on port ${port}`)
+const port = 4000;
+console.log(`Server is running on port ${port}`);
 
 serve({
   fetch: app.fetch,
-  port
-})
+  port,
+});
+
+export type AppType = typeof route;
