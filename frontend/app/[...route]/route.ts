@@ -19,7 +19,9 @@ app.get("/hello", async (c) => {
     return c.text("Error fetching data");
   }
   console.log(message);
-  return c.text(message);
+  return c.json({
+    message,
+  });
 });
 
 export const GET = handle(app);
