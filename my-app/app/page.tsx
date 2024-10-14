@@ -1,19 +1,24 @@
-'use client'
-import { useEffect, useState } from 'react'
+"use client";
+import { hc } from "hono/client";
+import { useEffect, useState } from "react";
+import { AppType } from "./api/[...route]";
 
 export default function Home() {
-  const [message, setMessage] = useState()
+  const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch('/api/hello')
-      const { message } = await res.json()
-      setMessage(message)
-    }
-    fetchData()
-  }, [])
+      const client = hc<AppType>("/");
+      const res = await client.api.v1.hello.$get();
+      console.log(res);
+      const { message: resData } = await res.json();
 
-  if (!message) return <p>Loading...</p>
+      setMessage(resData);
+    };
+    fetchData();
+  }, []);
 
-  return <p>{message}</p>
+  if (!message) return <p>Loading...</p>;
+
+  return <p>{message}</p>;
 }
