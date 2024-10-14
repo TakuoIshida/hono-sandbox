@@ -24,7 +24,17 @@ const bodySchema = z.object({
 });
 
 const authorsApp = new Hono()
-  .get("/", (c) => c.json({ result: "list authors" }))
+  .get("/", (c) => {
+    const queryParams = c.req.query();
+    const queryResult = querySchema.safeParse(queryParams);
+    if (!queryResult.success) {
+      return c.json({ error: queryResult.error }, 400);
+    }
+
+    const { name, age, email } = queryResult.data;
+    console.log(name, age, email);
+    return c.json({ result: "list authors" });
+  })
   .post("/", async (c) => {
     const body = await c.req.json();
     const bodyResult = bodySchema.safeParse(body);
@@ -36,21 +46,13 @@ const authorsApp = new Hono()
     return c.json({ result: "create an author" }, 201);
   })
   .get("/:id", (c) => {
-    const queryParams = c.req.query();
     const param = c.req.param();
     const paramResult = paramSchema.safeParse(param);
-    const queryResult = querySchema.safeParse(queryParams);
-    if (!queryResult.success) {
-      return c.json({ error: queryResult.error }, 400);
-    }
     if (!paramResult.success) {
       return c.json({ error: paramResult.error }, 400);
     }
-    const { name, age, email } = queryResult.data;
     const { id } = paramResult.data;
-    console.log(id, name, age, email);
-
-    return c.json({ result: `get ${c.req.param("id")}` });
+    return c.json({ result: `get ${id}` });
   });
 
 const booksApp = new Hono()
@@ -59,10 +61,10 @@ const booksApp = new Hono()
     console.log(q, limit, offset);
     return c.json({ result: "list books" });
   })
-  .post("/", (c) => c.json({ result: "create a book" }, 201))
-  .get("/:id/", (c) => c.json({ result: `get ${c.req.param("id")}` }));
+  .get("/:id", (c) => c.json({ result: `get ${c.req.param("id")}` }))
+  .post("/", (c) => c.json({ result: "create a book" }, 201));
 
-const app = new Hono()
+export const app = new Hono()
   .basePath("/api")
   .route("/authors", authorsApp)
   .route("/books", booksApp);
