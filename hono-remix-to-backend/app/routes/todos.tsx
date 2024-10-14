@@ -1,11 +1,11 @@
 import type { MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Button } from "~/components/ui/button";
-import { Card, CardContent } from "~/components/ui/card";
-import { Checkbox } from "~/components/ui/checkbox";
-import { Badge } from "~/components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
+import { Checkbox } from "../components/ui/checkbox";
+import { Badge } from "../components/ui/badge";
 import { PlusCircle } from "lucide-react";
-import { AppType } from "server/index";
+import { AppType } from "../../../backend/src/index";
 import { hc } from "hono/client";
 import { useState } from "react";
 
@@ -14,7 +14,7 @@ export const meta: MetaFunction = () => {
 };
 
 // HonoのRPC機能でClient作成
-const client = hc<AppType>(import.meta.env.VITE_API_URL);
+const client = hc<AppType>("http://localhost:4000/"); // バックエンドのURLを指定
 
 // 初回データフェッチ
 export const loader = async () => {
