@@ -26,10 +26,7 @@ const bodySchema = z.object({
 const authorsApp = new Hono()
   .get("/", (c) => c.json({ result: "list authors" }))
   .post("/", async (c) => {
-    console.log("create author");
     const body = await c.req.json();
-    console.log(body);
-
     const bodyResult = bodySchema.safeParse(body);
     if (!bodyResult.success) {
       return c.json({ error: bodyResult.error }, 400);
