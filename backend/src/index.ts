@@ -2,6 +2,7 @@ import { serve } from "@hono/node-server";
 import { z } from "zod";
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
+import { handle } from "hono/vercel";
 
 const app = new Hono();
 
@@ -84,3 +85,4 @@ serve({
 });
 
 export type AppType = typeof route;
+export default handle(app);
