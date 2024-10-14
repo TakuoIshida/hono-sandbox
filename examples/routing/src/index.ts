@@ -15,9 +15,29 @@ const paramSchema = z.object({
   id: z.string().transform((val) => parseInt(val)),
 });
 
+const bodySchema = z.object({
+  title: z.string().min(1).max(100),
+  idDeleted: z.boolean({
+    required_error: "idDeleted is required",
+    invalid_type_error: "idDeleted must be a boolean",
+  }),
+});
+
 const authorsApp = new Hono()
   .get("/", (c) => c.json({ result: "list authors" }))
-  .post("/", (c) => c.json({ result: "create an author" }, 201))
+  .post("/", async (c) => {
+    console.log("create author");
+    const body = await c.req.json();
+    console.log(body);
+
+    const bodyResult = bodySchema.safeParse(body);
+    if (!bodyResult.success) {
+      return c.json({ error: bodyResult.error }, 400);
+    }
+    const { title, idDeleted } = bodyResult.data;
+    console.log(title, idDeleted);
+    return c.json({ result: "create an author" }, 201);
+  })
   .get("/:id", (c) => {
     const queryParams = c.req.query();
     const param = c.req.param();
