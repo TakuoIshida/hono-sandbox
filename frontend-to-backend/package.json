@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "frontend-to-backend",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
