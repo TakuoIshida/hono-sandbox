@@ -38,41 +38,40 @@ app.use(
 const dummyTodos = [
   {
     id: 1,
-    text: "買い物に行く",
+    text: "買い物に行く from adapter",
     completed: false,
     dueDate: "2023-06-15",
     category: "日常",
   },
   {
     id: 2,
-    text: "レポートを書く",
+    text: "レポートを書く from adapter",
     completed: true,
     dueDate: "2023-06-10",
     category: "仕事",
   },
   {
     id: 3,
-    text: "運動する",
+    text: "運動する from adapter",
     completed: false,
     dueDate: "2023-06-16",
     category: "健康",
   },
   {
     id: 4,
-    text: "本を読む",
+    text: "本を読む from adapter",
     completed: false,
     dueDate: "2023-06-20",
     category: "趣味",
   },
   {
     id: 5,
-    text: "友達と電話する",
+    text: "友達と電話する from adapter",
     completed: true,
     dueDate: "2023-06-12",
     category: "社交",
   },
 ];
-
 
 const route = app
   .get("/api/todos", (c) => {
